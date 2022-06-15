@@ -16,9 +16,9 @@
 
 ## Документация
 
-* [**Литературный обзор**](https://drive.google.com/file/d/1ro0zcyvMTidWTupDEkZGuZT6qlUEcoo3/view?usp=sharing)
-* [**ТЗ Абрамов**](https://drive.google.com/file/d/1_HLrQ7empIbuKNqoOwfhk_XlrHRR9kvp/view?usp=sharing)
-* [**ТЗ Чеканов**](https://drive.google.com/file/d/1ZWd_UlV_69lB5GBh_c2qOhmLbZeLNNxa/view?usp=sharing)
-* [**Руководство пользователя**](https://docs.google.com/document/d/1VFguonyoHcCAcwGlCi2F6TGvjsx1RW4P/edit?usp=sharing)
-* [**Руководство разработчика**](https://docs.google.com/document/d/12rC2JXYY0Aiu0M8ZFpKueoujScwWDv0iL8gkcxGT4Qo/edit?usp=sharing)
-* [**Отчёт**](https://docs.google.com/document/d/1Auby3IOxTaKjiH_vvFPfqy2DaO3v1LQ_jQrd-i7rOsA/edit)
+* [**Литературный обзор**](/docs/%D0%9B%D0%B8%D1%82.%20%D0%BE%D0%B1%D0%B7%D0%BE%D1%80.pdf)
+* [**ТЗ**](/docs/%D0%A2%D0%97%20%D0%A7%D0%B5%D0%BA%D0%B0%D0%BD%D0%BE%D0%B2.pdf)
+* [**Руководство пользователя**](/docs/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F.pdf)
+* [**Руководство разработчика**](/docs/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE%20%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA%D0%B0.pdf)
+* [**Отчёт**](/docs/%D0%9E%D1%82%D1%87%D1%91%D1%82%20%D0%BF%D0%BE%20%D0%BA%D1%83%D1%80%D1%81%D0%BE%D0%B2%D0%BE%D0%B9.pdf)
+* [**Презентация**](/docs/%D0%9F%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F.pdf)
