@@ -1,0 +1,209 @@
+{% extends 'base.html' %} {% block title %} Список задач {% endblock %} {% block content %}
+
+<header>
+    <span>Задачник</span>
+        {% csrf_token %}
+    <form method="POST">
+        {% csrf_token %}
+        <span class="input-group-text header-span">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+        </svg>
+        </span>
+        <input name="_search" id="search" placeholder="Поиск по задачам" value="{{ search_string }}">
+    </form>
+    <button type="button" class="btn btn-primary" disabled>Профиль</button>
+</header>
+<br>
+
+<div class="main-container inline">
+    <div class="lists-list">
+        {% block lists %}
+        <h3>Списки задач</h3>
+        {% for list in lists_list %}
+        <table>
+            <td>
+                <form method="POST"> {% csrf_token %}
+                    <button type="submit" name="_delete_list" value="{{list.list_id}}" class="del-list">
+                        <span class="material-icons-outlined">delete_outline</span>
+                    </button>
+                </form>
+            </td>
+            <td>
+                <form method="POST"> {% csrf_token %} {% if list.list_id == selected_list.list_id %}
+                    <button type="submit" value="{{ list.list_id }}" name="_set_list" class="selected-list-link">
+                {% else %}
+                <button type="submit" value="{{ list.list_id }}" name="_set_list" class="list-link">
+                {% endif %}
+                    {{ list.name }}
+                </button>
+                </form>
+            </td>
+        </table>
+        {% endfor %}
+        <br>
+        <table>
+            <form method="POST"> {% csrf_token %}
+                <td class="material-icons-outlined"><input class="create-list-submit" type="submit" name="_add_list" value="post_add"></td>
+                <td><input class="create-list-name" type="text" name="name" value="" placeholder="Название списка" autocomplete="off"></td>
+            </form>
+        </table>
+        {% endblock %}
+    </div>
+
+    <div class="tasks-list">
+        {% block tasks_list %}
+        <h3>{{ selected_list }}</h3>
+        {% if task_list %} 
+            {% for task in task_list %} {% if not task.done %} {% if search_string in task.name %}
+        <table>
+
+            <td class="done-task">
+                <form method="POST" class="done-task"> {% csrf_token %}
+                    <button type="submit" name="_done" value="{{task.task_id}}" class="done-task">
+                        <span class="material-icons-outlined">check_box_outline_blank</span>
+                    </button>
+                </form>
+            </td>
+
+            {# https://stackoverflow.com/questions/3915917/make-a-link-use-post-instead-of-get #}
+            <td class="task-link">
+                <form method="POST" class="task-link"> {% csrf_token %}
+                    <button type="submit" value="{{ task.task_id }}" name="_set" class="task-link">
+                        <task-not-done>{{ task.name }}</task-not-done>
+                    </button>
+                </form>
+            </td>
+
+        </table>
+        {% endif %} {% endif %} {% endfor %} {% else %}
+        <task>Задачи не найдены</task><br><br> {% endif %}
+        <table class="create-task">
+            <form method="POST" class="create-task"> {% csrf_token %}
+                <td class="create-task-btn material-icons-outlined"><input type="submit" name="_add" value="post_add" class="create-task-btn"></td>
+                <td class="create-task-input"><input type="text" name="name" value="" placeholder="Название задачи" class="create-task-input" autocomplete="off"></td>
+            </form>
+        </table>
+        <hr>
+        <h5>Завершённые задачи</h5>
+        {% if task_list and show_done %} {% for task in task_list %} {% if task.done %} {% if search_string in task.name %}
+        <table>
+            <td class="done-task">
+                <form method="POST" class="done-task"> {% csrf_token %}
+                    <button type="submit" name="_done" value="{{task.task_id}}" class="done-task">
+                        <span class="material-icons-outlined">check_box</span>
+                    </button>
+                </form>
+            </td>
+            <td class="task-link">
+                <form method="POST"> {% csrf_token %}
+                    <button type="submit" value="{{ task.task_id }}" name="_set" class="task-link">
+                        <task-done>{{ task.name }}</task-done>
+                    </button>
+                </form>
+            </td>
+        </table>
+        {% endif %} {% endif %} {% endfor %} {% endif %} {% endblock %}
+    </div>
+
+    <div class="task-info">
+        {% block task_info %} {% if selected_task %}
+        <div>
+            <table class="rename-task">
+                {% if not selected_task.done %}
+                <form method="POST" class="done-task"> {% csrf_token %}
+                    <td class="done-task"><button type="submit" name="_done" value="{{selected_task.task_id}}" class="done-task"><span class="material-icons-outlined">check_box_outline_blank</span></button>
+                    </td>
+                </form>
+                <form method="POST"> {% csrf_token %}
+                    <input id="selected-task-id" type="hidden" value="{{selected_task.task_id}}">
+                    <td class="rename-task"><input id="rename-task" type="text" name="name_field" value="{{ selected_task.name }}" class="rename-task" autocomplete="off"></td>
+                </form>
+                {% else %}
+                <form method="POST" class="done-task"> {% csrf_token %}
+                    <td class="done-task"><button type="submit" name="_done" value="{{selected_task.task_id}}" class="done-task"><span class="material-icons-outlined">check_box</span></button>
+                    </td>
+                </form>
+                <form method="POST"> {% csrf_token %}
+                    <input id="selected-task-id" type="hidden" value="{{subtask.task_id}}">
+                    <td class="rename-finished-task"><input id="rename-task" type="text" name="name_field" value="{{ selected_task.name }}" class="rename-finished-task" autocomplete="off"></td>
+                </form>
+                {% endif %}
+            </table>
+            <br> {% if subtasks %}
+            <h6>Подзадачи</h6>
+            {% endif %} {% for subtask in subtasks %}
+            <table class="subtask-settings">
+                {% if not subtask.done %}
+                <form method="POST"> {% csrf_token %}
+                    <td class="done-subtask"><button type="submit" name="_done" value="{{subtask.task_id}}" class="done-subtask"><span class="material-icons-outlined">check_box_outline_blank</span></button></td>
+                </form>
+                <form method="POST"> {% csrf_token %}
+                    <input name="rename-subtask-id" type="hidden" value="{{subtask.task_id}}">
+                    <td class="rename-subtask"><input name="rename-subtask" type="text" value="{{ subtask.name }}" autocomplete="off"></td>
+                </form>
+                {% else %}
+                <form method="POST"> {% csrf_token %}
+                    <td class="done-subtask"><button type="submit" name="_done" value="{{subtask.task_id}}" class="done-subtask"><span class="material-icons-outlined">check_box</span></button></td>
+                </form>
+                <form method="POST"> {% csrf_token %}
+                    <input name="rename-subtask-id" type="hidden" value="{{subtask.task_id}}">
+                    <td class="rename-finished-subtask"><input name="rename-subtask" type="text" value="{{ subtask.name }}" autocomplete="off" class="rename-finished-subtask"></td>
+                </form>
+                {% endif %}
+                <form method="POST"> {% csrf_token %}
+                    <td class="remove-subtask"><button type="submit" name="_delete" value="{{subtask.task_id}}" class="remove-subtask"><span class="material-icons-outlined">delete_outline</span></button></td>
+                </form>
+                {% if not subtask.in_list %}
+                <form method="POST"> {% csrf_token %}
+                    <td class="show-subtask"><button type="submit" name="_show" value="{{subtask.task_id}}" class="show-subtask"><span class="material-icons-outlined">add_link</span></button></td>
+                </form>
+                {% else %}
+                <form method="POST"> {% csrf_token %}
+                    <td class="show-subtask"><button type="submit" name="_show" value="{{subtask.task_id}}" class="show-subtask"><span class="material-icons-outlined">link_off</span></button></td>
+                </form>
+                {% endif %}
+            </table>
+            {% endfor %} {% if selected_task.parent == 0 %}
+
+            <table class="create-subtask">
+                <form method="POST" class="create-subtask"> {% csrf_token %}
+                    <input type="hidden" name="parent_id" value="{{selected_task.task_id}}">
+                    <td class="create-subtask-btn material-icons-outlined"><input type="submit" name="_add_subtask" value="post_add" class="create-subtask-btn"></td>
+                    <td class="create-subtask-form"><input type="text" name="name_field" value="" placeholder="Создайте подзадачу" autocomplete="off" class="create-subtask-form"></td>
+                </form>
+            </table>
+            {% endif %}
+
+            <table class="set-deadline">
+                <td class="set-deadline-text"> Срок: &nbsp;&nbsp; </td>
+                <td class="set-deadline-form">
+                    <form method="POST" class="set-deadline-form"> {% csrf_token %}
+                        {% if selected_task.deadline == nodate %}
+                        <input type="date" value="" id="set-deadline" class="set-deadline-form"> 
+                        {% else %}
+                        <input type="date" value="{{selected_task.deadline.year}}-{{selected_month}}-{{selected_day}}" id="set-deadline" class="set-deadline-form"> 
+                        {% endif %}
+                    </form>
+                </td>
+            </table>
+            <form method="POST" class="task-description"> {% csrf_token %}
+                <textarea id="set-task-description" cols=40 rows=5 placeholder="Запишите сюда свои идеи" class="task-description">{% if selected_task.description != "None" %}{{ selected_task.description }}{% endif %}</textarea>
+            </form>
+        </div>
+
+        <div class="task-footer">
+            <form method="POST" class="remove-task"> {% csrf_token %}
+                <button class="btn btn-danger" type="submit" name="_delete" value="{{selected_task.task_id}}" class="remove-task">Удалить задачу</button>
+            </form>
+
+            <p class="task-info-meta">
+                Создана {{ selected_task.create_date }}, изменена {{ selected_task.modify_date }}
+            </p>
+        </div>
+        {% else %} Выберите задачу <br> {% endif %} {% endblock %}
+    </div>
+
+</div>
+
+{% endblock %}
