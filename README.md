@@ -2,6 +2,8 @@
 
 Над проектом трудятся студенты БИВ215 [Чеканов Иван](https://vk.com/chekanov_ivan) и [Абрамов Илья](https://vk.com/here_lives_padoru)
 
+![Web app screenshot](/design/web-app.png)
+
 ## Запуск
 
 ### Windows-приложение (desktop widget)
